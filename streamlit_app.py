@@ -12,7 +12,7 @@ if __name__ == "__main__":
         if query:
             with st.spinner("Fetching recommendations..."):
                 response = requests.post(
-                    "https://shl-deploy.onrender.com/recommend",
+                    "https://shlbackend.onrender.com/recommend",
                     json={"query": query}
                 )
                 if response.status_code == 200:
