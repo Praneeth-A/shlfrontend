@@ -1,27 +1,35 @@
-# import streamlit as st
 
-if __name__ == "__main__":
-    import streamlit as st
-    import requests
+import streamlit as st
+import requests
 
-    st.title("SHL Assessment Recommender")
+st.set_page_config(page_title="SHL Assessment Recommender", layout="centered")
+st.title("SHL Assessment Recommender")
 
-    query = st.text_input("Enter job description or requirement")
+# Input box
+query = st.text_area("Enter job description or requirement", height=150)
 
-    if st.button("Get Recommendations"):
-        if query:
-            with st.spinner("Fetching recommendations..."):
+# Button to trigger recommendation
+if st.button("Get Recommendations"):
+    if not query.strip():
+        st.warning("Please enter a query to proceed.")
+    else:
+        with st.spinner("Fetching recommendations..."):
+            try:
                 response = requests.post(
                     "https://shlbackend.onrender.com/recommend",
-                    json={"query": query}
+                    json={"query": query},
+                    timeout=30  # reasonable timeout to avoid hanging
                 )
+
                 if response.status_code == 200:
                     data = response.json()
                     if data:
-                        st.markdown("### Recommended Assessments")
+                        st.markdown("### ✅ Recommended Assessments")
                         st.table(data)
                     else:
                         st.warning("No relevant assessments found.")
                 else:
-                    st.error("Error in retrieving recommendations.")
-        # streamlit logic here
+                    st.error(f"❌ Backend error: {response.status_code}")
+
+            except requests.exceptions.RequestException as e:
+                st.error(f"🚨 Network error: {e}")
