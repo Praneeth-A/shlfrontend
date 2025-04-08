@@ -18,7 +18,7 @@ if st.button("Get Recommendations"):
                 response = requests.post(
                     "https://shlbackend.onrender.com/recommend",
                     json={"query": query},
-                    timeout=30  # reasonable timeout to avoid hanging
+                    timeout=360  # reasonable timeout to avoid hanging
                 )
 
                 
