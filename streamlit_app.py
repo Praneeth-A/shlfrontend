@@ -21,15 +21,13 @@ if st.button("Get Recommendations"):
                     timeout=30  # reasonable timeout to avoid hanging
                 )
 
-                if response.status_code == 200:
-                    data = response.json()
-                    if data:
-                        st.markdown("### ✅ Recommended Assessments")
-                        st.table(data)
-                    else:
-                        st.warning("No relevant assessments found.")
+                
+                data = response.json()
+                if data:
+                    st.markdown("### ✅ Recommended Assessments")
+                    st.table(data)
                 else:
-                    st.error(f"❌ Backend error: {response.status_code}")
+                    st.warning("No relevant assessments found.")
 
             except requests.exceptions.RequestException as e:
                 st.error(f"🚨 Network error: {e}")
